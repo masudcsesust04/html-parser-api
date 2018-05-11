@@ -12,6 +12,7 @@ gem 'rails', '~> 5.2.0'
 gem 'mysql2', '~> 0.5.1'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
+gem 'activerecord-import', '~> 0.23.0'
 gem 'jsonapi-resources', '~> 0.9.0'
 gem 'httparty', '~> 0.16.2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

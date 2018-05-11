@@ -7,24 +7,24 @@ class ContentsController < JSONAPI::ResourceController
       response = HTTParty.get(params[:ref_url])
       doc = Nokogiri::HTML(response.body)
 
+      contents = []
       %w[h1 h2 h3 a].each do |tag|
         doc.xpath("//#{tag}").each do |element|
-          extract_element(element, tag)
+          content = Content.new
+          content.url = params[:ref_url]
+          content.tag = tag
+          content.content = element.text
+          contents << content
         end
+      end
+
+      Content.transaction do
+        Content.import! contents, validate: false
       end
 
       render json: { success: true, code: response.code, message: response.message }
     rescue Exception => e
       render json: e
     end
-  end
-
-  private
-  def extract_element(element, tag='')
-    content = Content.new
-    content.url = params[:ref_url]
-    content.tag = tag
-    content.content = element.text
-    content.save!
   end
 end
